@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <!-- Servlet Konfig und mapping -->
+    <servlet>
+        <description>Protected Servlet</description>
+        <servlet-name>SecureServlet</servlet-name>
+        <servlet-class>ch.bfh.web.SecureServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SecureServlet</servlet-name>
+        <url-pattern>/protected/SecureServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- Definition der Rollen -->
+    <security-role>
+        <description/>
+        <role-name>user</role-name>
+    </security-role>
+
+    <!-- Definition der Constraint für das SecureServlet  -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>SecureServlet</web-resource-name>
+            <description>Matches all pages from protected</description>
+            <url-pattern>/protected/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description>SSL not required</description>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <!-- Login Konfig BASIC Auth mit SecureRealm -->
+    <!--
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>SecureRealm</realm-name>
+    </login-config>
+    -->
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>SecureRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/login/loginform.html</form-login-page>
+            <form-error-page>/login/loginerror.html</form-error-page>
+        </form-login-config>
+    </login-config>
+
+</web-app>
